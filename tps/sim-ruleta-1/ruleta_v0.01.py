@@ -16,8 +16,6 @@ for j in range(num_corridas):
     suma_total = 0
     frecuencia_relativa_victorias = []
     frecuencia_absoluta_victorias = []
-    frecuencia_relativa_esperada = (1/37)
-    frecuencia_absoluta_esperada = ((1/37)*100)
     valor_promedio_respecto_n = []
 
 
