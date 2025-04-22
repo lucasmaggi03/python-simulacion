@@ -22,10 +22,11 @@ fig, axs = plt.subplots(1, 2, figsize=(18, 6))
 axs[0].axhline(y=10000, color='red', linestyle='--', label="Monto de caja inicial")
 for j in range(num_corridas):
     #Elegimos el monto caja inicial de 10000 U.M.
-    monto_caja_actual = 1000
+    monto_caja_actual = 10000
     valores = [random.randint(0,36) for i in range(cant_tiradas)]
     valores_corrida.append(valores)
     monto_caja = []
+
 
     if (estrategia_elegida == "m"):
         apuesta_m = 10
@@ -42,13 +43,12 @@ for j in range(num_corridas):
             monto_caja.append(monto_caja_actual)
             print(monto_caja)
 
+
     if  (estrategia_elegida == "f"):
+        # Elegimos el color ROJO para hacer la prueba
         f1 = 0
         f2 = 1
         apuesta_f = f1 + f2
-        # Elegimos el color ROJO para hacer la prueba
-        print("f1 antes: ", f1, " en 0")
-        print("f2 antes: ", f2, " en 0")
         for i in range(cant_tiradas):
             if(((monto_caja_actual - apuesta_f) < 0) and (tipo_capital == "f")):
                 break
@@ -61,12 +61,28 @@ for j in range(num_corridas):
                     f1 = f1 - f2
                 apuesta_f = f1 + f2
             else:
+                monto_caja_actual = monto_caja_actual - apuesta_f
                 f1 = f2
                 f2 = apuesta_f
                 apuesta_f = f1 + f2
             monto_caja.append(monto_caja_actual)
-            if (f2 < f1):
-                print("TA MAL")
+
+
+    if  (estrategia_elegida == "d"):
+        # Elegimos el color ROJO para hacer la prueba
+        apuesta_d = 10
+        constante_suma_resta = 10
+        for i in range(cant_tiradas):
+            if(((monto_caja_actual - apuesta_d) < 0) and (tipo_capital == "f")):
+                break
+            if(valores[i] in numeros_rojos):
+                monto_caja_actual = monto_caja_actual + apuesta_d
+                if(apuesta_d > 10):
+                    apuesta_d = apuesta_d - constante_suma_resta
+            else:
+                monto_caja_actual = monto_caja_actual - apuesta_d
+                apuesta_d = apuesta_d + constante_suma_resta
+            monto_caja.append(monto_caja_actual)
 
 
     montos_cajas_corrida.append(monto_caja)
