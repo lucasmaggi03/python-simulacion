@@ -147,7 +147,10 @@ for j in range(num_corridas):
     plt.plot(monto_caja, label=f"Frecuencia relativa de victorias en la corrida")
     plt.xlabel('Número de tiradas')
     plt.ylabel('Cantidad de capital')
-    plt.title(f'Flujo de caja, cantidad de veces en bancarrota: {cont_bancarrota}, cant de corridas: {num_corridas}')
+    if(tipo_capital == 'f'):
+        plt.title(f'Flujo de caja, cantidad de veces en bancarrota: {cont_bancarrota}, cant de corridas: {num_corridas}')
+    else:
+        plt.title(f'Flujo de caja, cant de corridas: {num_corridas}')
 
 plt.savefig("Graficas.png")
 plt.show()
