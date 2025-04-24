@@ -3,16 +3,19 @@ import matplotlib.pyplot as plt
 import numpy as np
 import sys
 
-tipo_capital = sys.argv[5]
-estrategia_elegida = sys.argv[4]
-num_corridas = int(sys.argv[3])
-num_elegido = int(sys.argv[2])
-cant_tiradas = int(sys.argv[1])
+tipo_capital = sys.argv[8]
+estrategia_elegida = sys.argv[6]
+num_corridas = int(sys.argv[2])
+cant_tiradas = int(sys.argv[4])
 valores_corrida = []
 montos_cajas_corrida = []
 indice_cant_intentos_corrida = []
 frec_rel_cant_intentos_repetidos_corrida = []
+cont_bancarrota = 0
 
+if sys.argv[1] != '-c' or sys.argv[3] != '-n' or sys.argv[5] != '-s' or sys.argv[7] !='-a' :
+    print("Uso: python ruleta_v2.py -c <corridas> -n <tiradas> -s <estrategia(m,f,d)> -a <capital(f,i)>")
+    sys.exit(1)
 
 numeros_rojos = [1,3,5,7,9,11,13,15,17,19,21,23,25,27,29,31,33,35]
 numeros_columnas = [[1,2,3,4,5,6,7,8,9,10,11,12],[13,14,15,16,17,18,19,20,21,22,23,24],[25,26,27,28,29,30,31,32,33,34,35,36]]
@@ -37,6 +40,7 @@ for j in range(num_corridas):
         # Elegimos el color ROJO para hacer la prueba
         for i in range(cant_tiradas):
             if(((monto_caja_actual - apuesta_m) < 0) and (tipo_capital == "f")):
+                cont_bancarrota = cont_bancarrota + 1
                 break
             if(valores[i] in numeros_rojos):
                 monto_caja_actual = monto_caja_actual + apuesta_m
@@ -48,7 +52,6 @@ for j in range(num_corridas):
                 apuesta_m = apuesta_m*2
                 cont_repeticiones = cont_repeticiones + 1
             monto_caja.append(monto_caja_actual)
-            print(monto_caja)
 
 
     if  (estrategia_elegida == "f"):
@@ -58,6 +61,7 @@ for j in range(num_corridas):
         apuesta_f = f1 + f2
         for i in range(cant_tiradas):
             if(((monto_caja_actual - apuesta_f) < 0) and (tipo_capital == "f")):
+                cont_bancarrota = cont_bancarrota + 1
                 break
             if(valores[i] in numeros_rojos):
                 monto_caja_actual = monto_caja_actual + apuesta_f
@@ -84,6 +88,7 @@ for j in range(num_corridas):
         constante_suma_resta = 10
         for i in range(cant_tiradas):
             if(((monto_caja_actual - apuesta_d) < 0) and (tipo_capital == "f")):
+                cont_bancarrota = cont_bancarrota + 1
                 break
             if(valores[i] in numeros_rojos):
                 monto_caja_actual = monto_caja_actual + apuesta_d
@@ -103,6 +108,7 @@ for j in range(num_corridas):
         apuesta_x = 10
         for i in range(cant_tiradas):
             if(((monto_caja_actual - apuesta_x) < 0) and (tipo_capital == "f")):
+                cont_bancarrota = cont_bancarrota + 1
                 break
             if(i > 0):
                 for j in range(3):
@@ -141,7 +147,7 @@ for j in range(num_corridas):
     plt.plot(monto_caja, label=f"Frecuencia relativa de victorias en la corrida")
     plt.xlabel('Número de tiradas')
     plt.ylabel('Cantidad de capital')
-    plt.title(f'Flujo de caja')
+    plt.title(f'Flujo de caja, cantidad de veces en bancarrota: {cont_bancarrota}, cant de corridas: {num_corridas}')
 
 plt.savefig("Graficas.png")
 plt.show()
@@ -151,7 +157,7 @@ for i in range (num_corridas):
     plt.bar(indice_cant_intentos_corrida[i], frec_rel_cant_intentos_repetidos_corrida[i], color='blue')
     plt.xlabel('Numero de Tiradas')
     plt.ylabel('Frecuencia Relativa')
-    plt.title(f'Frecuencia relativa en corrida: {(i+1)}')
+    plt.title(f'Frecuencia relativa de obtener la apuesta favorable en corrida: {(i+1)}')
     plt.savefig(f'grafica_frecuencia_relativa_corrida{(i+1)}.png')        
     plt.show()
 
