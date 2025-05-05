@@ -54,9 +54,13 @@ if (tipo_test_aleatorio == "random_python"):
         print(f'[{i}]       {valor_generado}     {valor_generado_binario}')
 
 
+## Prueba Monobit y transformacion de los numeros generados a binario
 suma_ceros_unos = numeros_cero + numeros_uno
-print("Cantidad de ceros: ", valores_aleatorios_generados_binarios.count('0'))
-print("Cantidad de unos: ", valores_aleatorios_generados_binarios.count('1'))
+print("")
+print("Prueba Monobit")
+print("Cantidad de ceros: ", numeros_cero)
+print("Cantidad de unos: ", numeros_uno)
+print("Cantidad de dig binarios: ", suma_ceros_unos)
 print("Porcentaje de unos: ", (numeros_uno/suma_ceros_unos)*100)
 print("Porcentaje de ceros: ", (numeros_cero/suma_ceros_unos)*100)
 
@@ -64,10 +68,20 @@ print("Porcentaje de ceros: ", (numeros_cero/suma_ceros_unos)*100)
 numero_verificacion_monobit = ((abs(numeros_uno - numeros_cero))/(math.sqrt(suma_ceros_unos)))
 print("Numero de verificacion de test monobit: ", numero_verificacion_monobit)
 
-kstest_result = ss.kstest(valores_aleatorios_generados, 'uniform', args=(min(valores_aleatorios_generados), max(valores_aleatorios_generados)-min(valores_aleatorios_generados)))
-print(f"Estadístico de la prueba: {kstest_result.statistic}")
-print(f"Valor p: {kstest_result.pvalue}")
 
+## Kolmogorov smirnov test
+kstest_result = ss.kstest(valores_aleatorios_generados, 'uniform', args=(min(valores_aleatorios_generados), max(valores_aleatorios_generados)-min(valores_aleatorios_generados)))
+print("")
+print("Test Kolmogorov Smirnov")
+print(f"Estadístico de la prueba (Kstest): {kstest_result.statistic}")
+print(f"Valor p (Kstest): {kstest_result.pvalue}")
+if(kstest_result.pvalue >= 0.05):
+    print("Los numeros generados parecen seguir una distribucion uniforme")
+else:
+    print("Los numeros generados NO parecen seguir una distribucion uniforme")
+
+
+## Grafica de dispersion
 plt.figure(figsize=(10, 6))
 plt.scatter(range(len(valores_aleatorios_generados)), valores_aleatorios_generados,s=0.5,color='black')
 plt.title('Gráfica de Dispersión de Números Generados')
@@ -77,6 +91,7 @@ plt.savefig('Grafica_dispersion.png')
 plt.show()
 
 
+## Histograma de numeros generados
 plt.figure(figsize=(10, 6))
 plt.hist(valores_aleatorios_generados, bins=30, edgecolor='k', alpha=0.7)
 plt.title('Histograma de los Números Generados')
@@ -87,6 +102,7 @@ plt.savefig('Histograma_numeros_generados.png')
 plt.show()
 
 
+## Grafica de distribucion de ceros y unos binarios
 plt.figure(figsize=(8,6))
 plt.bar(["Ceros", "Unos"], [((numeros_cero/suma_ceros_unos)*100), ((numeros_uno/suma_ceros_unos)*100)], color='blue')
 plt.xlabel('Valor')
