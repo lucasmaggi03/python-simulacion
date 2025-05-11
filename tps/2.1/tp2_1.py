@@ -63,11 +63,11 @@ print(bits)
 
 ## Prueba de autocorrelacion
 n = len(bits)
-matches = sum(bits[i] == bits[i + 1] for i in range(n - 1))
+coincidencias = sum(bits[i] == bits[i + 1] for i in range(n - 1))
 p = 0.5
-expected = (n - 1) * p
-variance = (n - 1) * p * (1 - p)
-z = (matches - expected) / (variance ** 0.5)
+esperado = (n - 1) * p
+varianza = (n - 1) * p * (1 - p)
+z = (coincidencias - esperado) / (varianza ** 0.5)
 print("")
 print("PRUEBA DE AUTOCORRELACION")
 print(f"Autocorrelación con desfase {1}: z = {z}")
@@ -94,15 +94,15 @@ else:
     Vn = 1 + sum(bits[i] != bits[i + 1] for i in range(n - 1))
 
     # Calcular valor esperado y varianza
-    expected = 2 * n * pr * (1 - pr)
-    variance = (2 * n * pr * (1 - pr) * (2 * n * pr * (1 - pr) - 1)) / (n - 1)
-    z = (Vn - expected) / (variance ** 0.5)
+    esperado = 2 * n * pr * (1 - pr)
+    varianza = (2 * n * pr * (1 - pr) * (2 * n * pr * (1 - pr) - 1)) / (n - 1)
+    z = (Vn - esperado) / (varianza ** 0.5)
 
     # Mostrar resultados
     print(f"Proporción de unos (pr): {pr}")
     print(f"Número de corridas observadas (Vn): {Vn}")
-    print(f"Valor esperado de corridas: {expected}")
-    print(f"Varianza: {variance}")
+    print(f"Valor esperado de corridas: {esperado}")
+    print(f"Varianza: {varianza}")
     print(f"Estadístico z: {z}")
 
     if abs(z) < 1.96:
