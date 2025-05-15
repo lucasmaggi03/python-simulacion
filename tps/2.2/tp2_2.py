@@ -8,9 +8,10 @@ import scipy.stats as ss
 valor_inicial = 0
 valor_final = 1
 num_uniformes = np.random.uniform(valor_inicial,valor_final,1000) #Genera 1000 valores pseudoaleatorios con distribucion uniforme entre 0 y 1
+num_uniformes_inversa = valor_inicial + (valor_final - valor_inicial) * num_uniformes
 #Graficar valores uniformes
 plt.figure(figsize=(8, 4))
-plt.hist(num_uniformes, bins=50, density=True, alpha=0.6, color='skyblue', edgecolor='black', label='Datos simulados')
+plt.hist(num_uniformes_inversa, bins=50, density=True, alpha=0.6, color='skyblue', edgecolor='black', label='Datos simulados')
 # Calculo de probabilidad teorica
 valores_referencia_x = np.linspace(0, 1, 100) # Crea 100 numeros equiespaciados entre 0 y 1
 valores_referencia_y = [valor_final / (valor_final - valor_inicial)] * 100 # Calculado con la funcion de densidad de probabilidad
@@ -23,6 +24,7 @@ plt.legend()
 plt.grid(True)
 plt.tight_layout()
 plt.show()
+print("La media de la distribucion uniforme simulada es: ", np.mean(num_uniformes_inversa))
 
 
 
@@ -46,6 +48,7 @@ plt.legend()
 plt.grid(True)
 plt.tight_layout()
 plt.show()
+print("La media de la distribucion exponencial simulada es: ", np.mean(num_exponenciales))
 
 
 
@@ -68,7 +71,8 @@ plt.legend()
 plt.grid(True)
 plt.tight_layout()
 plt.show()
-
+print("La media de la distribucion gamma es: ", np.mean(num_gamma))
+print("La varianza de la distribucion gamma es: ", np.var(num_gamma))
 
 # Generar numeros pseudoaleatorios con distribucion de probabilidad normal
 mu = 0      # media
@@ -89,6 +93,8 @@ plt.legend()
 plt.grid(True)
 plt.tight_layout()
 plt.show()
+print("La media de la distribucion normal es: ", np.mean(num_normal))
+print("La desviacion estandar de la distribucion normal es: ", np.std(num_normal))
 
 
 # DISTRIBUCIONES DISCRETAS
@@ -113,6 +119,8 @@ plt.legend()
 plt.grid(True)
 plt.tight_layout()
 plt.show()
+print("La media de la distribucion pascal es: ", np.mean(num_pascal))
+print("La varianza de la distribucion pascal es: ", np.var(num_pascal))
 
 
 # Generar numeros con distribucion de probabilidad binomial
@@ -136,6 +144,8 @@ plt.legend()
 plt.grid(True)
 plt.tight_layout()
 plt.show()
+print("La media de la distribucion pascal es: ", np.mean(num_binomial))
+print("La varianza de la distribucion pascal es: ", np.var(num_binomial))
 
 
 
@@ -162,6 +172,8 @@ plt.legend()
 plt.grid(True)
 plt.tight_layout()
 plt.show()
+print("La media de la distribucion hipergeometrica es: ", np.mean(num_hipergeometrico))
+print("La varianza de la distribucion hipergeometrica es: ", np.var(num_hipergeometrico))
 
 
 
@@ -185,6 +197,8 @@ plt.legend()
 plt.grid(True)
 plt.tight_layout()
 plt.show()
+print("La media de la distribucion poisson es: ", np.mean(num_hipergeometrico))
+print("La varianza de la distribucion poisson es: ", np.var(num_hipergeometrico))
 
 
 
@@ -213,3 +227,7 @@ plt.legend()
 plt.grid(True)
 plt.tight_layout()
 plt.show()
+print("La media de la distribucion empirica discreta observada es: ", np.mean(datos_observados))
+print("La media de la distribucion empirica discreta simulada es: ", np.mean(num_empiricos))
+print("La varianza de la distribucion empirica discreta observada es: ", np.var(datos_observados))
+print("La varianza de la distribucion empirica discreta simulada es: ", np.var(num_empiricos))
