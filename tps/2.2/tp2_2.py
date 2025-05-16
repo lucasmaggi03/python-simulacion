@@ -2,16 +2,16 @@ import matplotlib.pyplot as plt
 import numpy as np
 import scipy.stats as ss
 
-
+print("")
+print("DISTRIBUCION UNIFORME")
 #DISTRIBUCIONES CONTINUAS
 # Generar numeros pseudoaleatorios con distribucion de probabilidad uniforme
 valor_inicial = 0
 valor_final = 1
 num_uniformes = np.random.uniform(valor_inicial,valor_final,1000) #Genera 1000 valores pseudoaleatorios con distribucion uniforme entre 0 y 1
-num_uniformes_inversa = valor_inicial + (valor_final - valor_inicial) * num_uniformes
 #Graficar valores uniformes
 plt.figure(figsize=(8, 4))
-plt.hist(num_uniformes_inversa, bins=50, density=True, alpha=0.6, color='skyblue', edgecolor='black', label='Datos simulados')
+plt.hist(num_uniformes, bins=50, density=True, alpha=0.6, color='skyblue', edgecolor='black', label='Datos simulados')
 # Calculo de probabilidad teorica
 valores_referencia_x = np.linspace(0, 1, 100) # Crea 100 numeros equiespaciados entre 0 y 1
 valores_referencia_y = [valor_final / (valor_final - valor_inicial)] * 100 # Calculado con la funcion de densidad de probabilidad
@@ -24,11 +24,19 @@ plt.legend()
 plt.grid(True)
 plt.tight_layout()
 plt.show()
-print("La media de la distribucion uniforme simulada es: ", np.mean(num_uniformes_inversa))
+print("La media de la distribucion uniforme simulada es: ", np.mean(num_uniformes))
+#Kolmogorov-Smirnov
+estadistico, valor_p = ss.kstest(num_uniformes, 'uniform', args=(valor_inicial, valor_final - valor_inicial))
+print("Uniforme - D:", estadistico, "| p-valor:", valor_p)
+if(valor_p > 0.05):
+    print("El valor de P es mayor a 0.05 por lo tanto podemos afirmar que los datos generados parecen seguir una distribucion uniforme")
+else:
+    print("El valor de P es menor a 0.05 por lo tanto podemos decir que los datos generados NO parecen seguir una distribucion uniforme")
 
 
 
-
+print("")
+print("DISTRIBUCION EXPONENCIAL")
 # Generar numeros pseudoaleatorios con distribucion de probabilidad exponencial (Usando transformada inversa)
 lambd = 1.5 # Valor de LAMBDA
 num_uniformes_para_exponencial = np.random.uniform(0,1,1000) # num_uniformes_para_exponencial ~ U(0,1)
@@ -49,9 +57,17 @@ plt.grid(True)
 plt.tight_layout()
 plt.show()
 print("La media de la distribucion exponencial simulada es: ", np.mean(num_exponenciales))
+#Kolmogorov-Smirnov
+estadistico, valor_p = ss.kstest(num_exponenciales, 'expon', args=(0, 1 / lambd))
+print("Exponencial - D:", estadistico, "| p-valor:", valor_p)
+if(valor_p > 0.05):
+    print("El valor de P es mayor a 0.05 por lo tanto podemos afirmar que los datos generados parecen seguir una distribucion exponencial")
+else:
+    print("El valor de P es menor a 0.05 por lo tanto podemos decir que los datos generados NO parecen seguir una distribucion exponencial")
 
 
-
+print("")
+print("DISTRIBUCION GAMMA")
 # Generar numeros pseudoaleatorios con distribucion de probabilidad gamma
 alpha = 2.0   # forma (k)
 beta = 1.0    # escala
@@ -73,7 +89,17 @@ plt.tight_layout()
 plt.show()
 print("La media de la distribucion gamma es: ", np.mean(num_gamma))
 print("La varianza de la distribucion gamma es: ", np.var(num_gamma))
+#Kolmogorov-Smirnov
+estadistico, valor_p = ss.kstest(num_gamma, 'gamma', args=(alpha, 0, beta))
+print("Gamma - D:", estadistico, "| p-valor:", valor_p)
+if(valor_p > 0.05):
+    print("El valor de P es mayor a 0.05 por lo tanto podemos afirmar que los datos generados parecen seguir una distribucion gamma")
+else:
+    print("El valor de P es menor a 0.05 por lo tanto podemos decir que los datos generados NO parecen seguir una distribucion gamma")
 
+
+print("")
+print("DISTRIBUCION NORMAL")
 # Generar numeros pseudoaleatorios con distribucion de probabilidad normal
 mu = 0      # media
 sigma = 1   # desviación estándar
@@ -95,9 +121,19 @@ plt.tight_layout()
 plt.show()
 print("La media de la distribucion normal es: ", np.mean(num_normal))
 print("La desviacion estandar de la distribucion normal es: ", np.std(num_normal))
+#Kolmogorov-Smirnov
+estadistico, valor_p = ss.kstest(num_normal, 'norm', args=(mu, sigma))
+print("Normal - D:", estadistico, "| p-valor:", valor_p)
+if(valor_p > 0.05):
+    print("El valor de P es mayor a 0.05 por lo tanto podemos afirmar que los datos generados parecen seguir una distribucion normal")
+else:
+    print("El valor de P es menor a 0.05 por lo tanto podemos decir que los datos generados NO parecen seguir una distribucion normal")
+
 
 
 # DISTRIBUCIONES DISCRETAS
+print("")
+print("DISTRIBUCION PASCAL")
 # Generar numeros con distribucion de probabilidad pascal (binomial negativa)
 exitos_deseados = 5       # número de éxitos deseados
 probabilidad_exito = 0.3     # probabilidad de éxito
@@ -121,8 +157,14 @@ plt.tight_layout()
 plt.show()
 print("La media de la distribucion pascal es: ", np.mean(num_pascal))
 print("La varianza de la distribucion pascal es: ", np.var(num_pascal))
+media_teorica = exitos_deseados * (1 - probabilidad_exito) / probabilidad_exito
+var_teorica = exitos_deseados * (1 - probabilidad_exito) / (probabilidad_exito ** 2)
+print("La media teorica de la distribucion pascal es: ", media_teorica)
+print("La varianza teorica de la distribucion pascal es: ", var_teorica)
 
 
+print("")
+print("DISTRIBUCION BINOMIAL")
 # Generar numeros con distribucion de probabilidad binomial
 num_ensayos = 10   # número de ensayos
 prob_exito = 0.4         # probabilidad de éxito
@@ -146,10 +188,15 @@ plt.tight_layout()
 plt.show()
 print("La media de la distribucion pascal es: ", np.mean(num_binomial))
 print("La varianza de la distribucion pascal es: ", np.var(num_binomial))
+media_teorica = num_ensayos * prob_exito
+var_teorica = num_ensayos * prob_exito * (1 - prob_exito)
+print("La media teorica de la distribucion BINOMIAL es: ", media_teorica)
+print("La varianza teorica de la distribucion BINOMIAL es: ", var_teorica)
 
 
 
-
+print("")
+print("DISTRIBUCION HIPERGEOMETRICA")
 # Generar numeros con distribucion de probabilidad hipergeometrica
 tam_total = 50      # tamaño total de la población
 num_exitos = 15      # número de éxitos en la población
@@ -174,9 +221,14 @@ plt.tight_layout()
 plt.show()
 print("La media de la distribucion hipergeometrica es: ", np.mean(num_hipergeometrico))
 print("La varianza de la distribucion hipergeometrica es: ", np.var(num_hipergeometrico))
+media_teorica = num_extracciones * (num_exitos / tam_total)
+var_teorica = num_extracciones * (num_exitos / tam_total) * ((tam_total - num_exitos) / tam_total) * ((tam_total - num_extracciones) / (tam_total - 1))
+print("La media teorica de la distribucion Hipergeometrica es: ", media_teorica)
+print("La varianza teorica de la distribucion Hipergeometrica es: ", var_teorica)
 
 
-
+print("")
+print("DISTRIBUCION POISSON")
 # Generar numeros con distribucion de probabilidad Poisson
 lambd = 4 # Tasa de eventos, valor de LAMBDA
 num_poisson = np.random.poisson(lam=lambd, size=1000) # Genera 1000 valores con distribucion de poisson
@@ -199,9 +251,14 @@ plt.tight_layout()
 plt.show()
 print("La media de la distribucion poisson es: ", np.mean(num_hipergeometrico))
 print("La varianza de la distribucion poisson es: ", np.var(num_hipergeometrico))
+# Teóricas (ambas iguales a λ en Poisson)
+print("La media teorica de la distribucion poisson es: ", lambd)
+print("La varianza teorica de la distribucion poisson es: ", lambd)
 
 
 
+print("")
+print("DISTRIBUCION EMPIRICA DISCRETA")
 # Generar numeros con distribucion de probabilidad empirica discreta
 # Primero vamos a generar 15 valores de forma aleatoria entre 0 y 10 ya que la distribucion empirica discreta se contruye a partir de un conjunto de datos objservados
 datos_observados = np.random.uniform(0,10,15)
